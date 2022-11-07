@@ -41,11 +41,18 @@ chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-gpu")
 chrome_options.add_argument('log-level=3')
 driver = webdriver.Chrome(options=chrome_options)
+driver.set_window_rect(400, 10, 400, 600)
+t = True
 for i in data:
+    if t == True:
+        sleep(10)
+        t = False
+    else:
+        pass
     i.replace('\n', '')
     url = 'https://tiktok.com/@'+i
     driver.get(url)
-    WebDriverWait(driver, timeout = 0.1)
+    WebDriverWait(driver, timeout = 2)
     try:
         e = driver.find_element(By.CSS_SELECTOR, "#app > div.tiktok-ywuvyb-DivBodyContainer.e1irlpdw0 > div.tiktok-w4ewjk-DivShareLayoutV2.elmjn4l0 > div > div.tiktok-1g04lal-DivShareLayoutHeader-StyledDivShareLayoutHeaderV2.elmjn4l2 > div.tiktok-1gk89rh-DivShareInfo.ekmpd5l2 > div.tiktok-1hdrv89-DivShareTitleContainer.ekmpd5l3 > div > div > button").click()
         now = datetime.datetime.now()
@@ -59,8 +66,10 @@ for i in data:
         s1 = '[DIE]  -> '+ i
         print(Fore.RED + s1, file = stream)
         f3.write(i)
+    sleep(10)
 now = datetime.datetime.now()
 print(Fore.BLUE + '[', now.strftime("%Y-%m-%d %H:%M:%S"), '] Done !', file=stream, end='')
 f.close()
 f2.close()
 f3.close()
+driver.close()
